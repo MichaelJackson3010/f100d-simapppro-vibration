@@ -73,7 +73,15 @@ folders, done.
 - If WinWing ships official F-100D support, this project becomes obsolete —
   the installer detects the official entry and skips the patch.
 
-## How it works (the long version)
+## For developers
+
+**[TECHNICAL.md](TECHNICAL.md)** documents the full reverse-engineered picture:
+SimAppPro's vibration architecture and data flow, the per-aircraft/per-device
+config format, exactly why CoreMods-packaged modules don't appear in the UI,
+and a concrete checklist for official support (spoiler: it's three data
+changes on the WinWing side and zero changes on the module side).
+
+## How it works (the short version)
 
 SimAppPro's DCS export script (`Scripts\wwt\wwtExport.lua`) reports the current
 aircraft's internal name (`F-100D`) over a local socket. The vibration engine
