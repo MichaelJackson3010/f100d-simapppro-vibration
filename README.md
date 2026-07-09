@@ -1,99 +1,87 @@
-# F-100D Super Sabre — WinWing SimAppPro Vibration Support
+# F-100D Super Sabre — WinWing Vibration Support
 
-Adds the **F-100D Super Sabre** (Grinnelli Designs) to WinWing SimAppPro's
-vibration system, so your stick and throttle shake with **AoA buffet, weapon
-release, cannon fire, gear, speedbrakes and G-loading** — just like the
-officially supported modules.
+Feel the Hun. This adds the **F-100D Super Sabre** to WinWing SimAppPro's
+vibration system, so your WinWing stick and throttle shake with:
 
-WinWing hasn't shipped a profile for the F-100D yet. It turns out SimAppPro's
-vibration engine is completely aircraft-agnostic (it reads generic DCS export
-telemetry), so all that's missing is configuration — which this project
-provides, plus a small patch so the F-100D tile appears in the SimAppPro UI.
+- 🌀 **AoA buffet** — feel the wing talking to you before it bites (and in
+  *this* jet, you want that warning)
+- 💥 **Weapon release and cannon fire**
+- 🛬 **Gear travel and touchdown thump**
+- 💨 **Speedbrakes, control surfaces and G-loading**
 
-> Not affiliated with WinWing or Grinnelli Designs. No WinWing or Grinnelli
-> files are redistributed — the installer copies the required templates from
-> your **own** installation.
+WinWing hasn't released an official F-100D profile yet, so the Super Sabre
+doesn't appear in SimAppPro. This project fixes that with a small, fully
+reversible setup — the same vibration engine WinWing uses for every other
+aircraft, just unlocked for the F-100D.
 
-## What you get
-
-- The **F-100D aircraft tile** in SimAppPro's vibration page (DCS platform).
-- **Default vibration curves** for every WinWing vibration-capable device
-  (cloned from the F-5E-3 profile — an era-appropriate supersonic gun fighter).
-- Full access to SimAppPro's graphical curve editor for the F-100D, so you can
-  tune every effect to your own hardware and taste.
-
-## Requirements
-
-- WinWing SimAppPro (tested with the July 2026 build)
-- DCS World with the F-100D module
-- SimAppPro's DCS export scripts already installed (the usual
-  "Sync/Repair Export.lua" step in SimAppPro settings)
+> Fan project — not affiliated with WinWing or Grinnelli Designs, and no
+> WinWing or Grinnelli files are included. Everything is set up from files
+> already in **your own** installation.
 
 ## Install
 
-1. Download this repository (green **Code** button → **Download ZIP**) and
+1. Click the green **Code** button (top of this page) → **Download ZIP**, and
    extract it anywhere.
-2. Right-click `install.ps1` → **Run with PowerShell**, and accept the
-   administrator prompt (needed to patch a file inside Program Files —
-   a backup is created automatically).
-3. SimAppPro restarts by itself. Select **DCS** on the vibration page —
-   the **F-100D** tile is now in the aircraft row.
-4. Fly. Pull hard, feel the buffet.
+2. Right-click **`install.ps1`** → **Run with PowerShell**.
+   - The script first shows you a summary of what it will change and waits
+     for you to press Enter.
+   - Windows will then show an administrator (UAC) prompt — that's needed to
+     edit one SimAppPro file inside Program Files. A backup of that file is
+     made automatically first.
+3. SimAppPro restarts by itself. Select **DCS** on the vibration page — the
+   **F-100D** tile is now in the aircraft row. Fly!
 
-### What the installer actually does
+Every device starts with sensible default curves (borrowed from the F-5E-3 —
+another supersonic gun fighter of the same era). Want more buffet, earlier?
+Switch your device to **Advanced** in SimAppPro and drag the curves around in
+the built-in editor.
 
-| Step | Change | Where |
-|------|--------|-------|
-| 1 | Adds `F-100D` to the aircraft list inside `app.asar` (byte-length-identical edit; original kept as `app.asar.bak`) | SimAppPro install folder |
-| 2 | Creates F-100D default vibration curves by copying the F-5E-3 profile already on your machine | SimAppPro install + `%APPDATA%\SimAppPro\ShakeEffect` |
-| 3 | Creates a comment-only `entry.lua` stub so SimAppPro's module scan finds the F-100D (the module itself installs under `CoreMods`, where SimAppPro doesn't look). DCS executes nothing from it. | DCS install `Mods\aircraft\F-100D` |
+## Is this safe?
 
-Everything is reversible: restore `app.asar.bak`, delete the created `F-100D`
-folders, done.
+Healthy question — random scripts from the internet *should* make you pause.
+Here's exactly what's going on, and how to check it yourself:
 
-## Using / tuning
+- **The script is ~130 lines and open for you to read.** Right-click
+  `install.ps1` → **Edit** opens it in Notepad. Every step is commented in
+  plain English.
+- **It downloads nothing and sends nothing.** No internet access, no
+  telemetry, no accounts. It only copies files that are already on your PC.
+- **It doesn't touch your DCS installation's game files.** The only thing it
+  adds on the DCS side is a tiny text file (`entry.lua` stub, comments only)
+  that DCS itself completely ignores — it exists purely so SimAppPro's
+  aircraft scanner can "see" the F-100D. Verified safe: DCS executes nothing
+  from it.
+- **The one real change** is adding "F-100D" to the aircraft list inside a
+  SimAppPro file (`app.asar`). The original is saved as `app.asar.bak` right
+  next to it before anything is modified.
+- **Why the admin prompt?** That one file lives in `C:\Program Files (x86)`,
+  which Windows protects. That's the only reason.
+- **Why does Windows warn me about the script?** Windows shows a warning for
+  *any* PowerShell script that isn't digitally signed by a company. Hobby
+  projects like this one aren't signed — the warning is about the signature,
+  not the contents.
 
-- Devices in **default** mode use the F-5E-3-derived curves out of the box —
-  every WinWing vibration-capable device is covered.
-- Switch a device to **Advanced** in SimAppPro to edit the curves in the
-  graphical editor once the F-100D tile is selected — AoA buffet onset,
-  gun-fire intensity, touchdown thump, all of it is tunable to your taste.
-- Your tuned curves are saved under
-  `%APPDATA%\SimAppPro\ShakeEffect\active\DCS\F-100D\` and survive both
-  SimAppPro updates and re-runs of the installer.
+## Undo / uninstall
 
-## Known limitations
+Everything is reversible in two minutes:
 
-- **SimAppPro updates undo the patch** (they replace `app.asar` and the
-  default profile folders). Just run `install.ps1` again. Your tuned profiles
-  in `%APPDATA%` survive updates.
-- A DCS **repair** may list the detection stub as an extra file — that's ours,
-  it's harmless, and repair only removes it if you ask it to clean extras
-  (re-run the installer to recreate it).
-- If WinWing ships official F-100D support, this project becomes obsolete —
-  the installer detects the official entry and skips the patch.
+1. Close SimAppPro. In `C:\Program Files (x86)\SimAppPro\resources\`, delete
+   `app.asar` and rename `app.asar.bak` back to `app.asar`.
+2. Delete the `F-100D` folders in:
+   - `C:\Program Files (x86)\SimAppPro\resources\app.asar.unpacked\Events\DynamicVibrationMotor\DCS\`
+   - `%APPDATA%\SimAppPro\ShakeEffect\default\DCS\` and `...\active\DCS\`
+3. Delete the folder `<your DCS install>\Mods\aircraft\F-100D` (the stub).
 
-## For developers
+## Good to know
 
-**[TECHNICAL.md](TECHNICAL.md)** documents the full reverse-engineered picture:
-SimAppPro's vibration architecture and data flow, the per-aircraft/per-device
-config format, exactly why CoreMods-packaged modules don't appear in the UI,
-and a concrete checklist for official support (spoiler: it's three data
-changes on the WinWing side and zero changes on the module side).
-
-## How it works (the short version)
-
-SimAppPro's DCS export script (`Scripts\wwt\wwtExport.lua`) reports the current
-aircraft's internal name (`F-100D`) over a local socket. The vibration engine
-(`ShakeEffect\effect\DCS\VibrationEffect_V1.5.js`) evaluates generic DCS export
-API calls — `LoGetAngleOfAttack()`, `LoGetPayloadInfo()`, `LoGetMechInfo()`,
-`LoGetAccelerationUnits()` — and maps them through per-aircraft, per-device
-curve files stored as plain JSON. In-game vibration works for *any* module the
-moment those folders exist. Only the UI's aircraft tile row is gated: it scans
-the DCS install's `Mods\aircraft` folder and filters it through a hardcoded
-name map inside `app.asar`. The F-100D fails both checks — its files install
-under `CoreMods\aircraft`, which the scan never reads — hence the one-line map
-patch and the detection stub.
+- **SimAppPro updates undo this** (updates replace the files we change). Fix:
+  run `install.ps1` again — takes 30 seconds. Any curves you tuned yourself
+  are kept safe in `%APPDATA%` and survive both updates and re-installs.
+- A DCS **repair** may list the little stub file as "extra" — that's ours,
+  it's harmless, and re-running the installer brings it back if repair
+  removes it.
+- If WinWing ships official F-100D support one day, the installer notices and
+  steps aside automatically.
 
 ## Credits
 
@@ -101,3 +89,6 @@ patch and the detection stub.
 - Reverse engineering done with Claude (Anthropic)
 - Thanks to Grinnelli Designs for the Super Sabre and WinWing for hardware
   that shakes
+
+*Curious how it all works under the hood? See [TECHNICAL.md](TECHNICAL.md)
+for the full write-up.*

@@ -15,10 +15,28 @@
 
 $ErrorActionPreference = 'Stop'
 
-# ---- self-elevate (app.asar lives in Program Files) -------------------------
+# ---- tell the user what is about to happen, and ask first --------------------
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
-    Write-Host "Requesting administrator rights (needed to patch app.asar)..."
+    Write-Host ""
+    Write-Host "F-100D Super Sabre - WinWing SimAppPro vibration setup" -ForegroundColor Cyan
+    Write-Host "======================================================="
+    Write-Host "This script will:"
+    Write-Host "  1. Close SimAppPro."
+    Write-Host "  2. Add 'F-100D' to SimAppPro's aircraft list (one file in Program"
+    Write-Host "     Files - a backup named app.asar.bak is created first)."
+    Write-Host "  3. Create F-100D vibration curves by copying the F-5E-3 profile"
+    Write-Host "     already in your SimAppPro installation."
+    Write-Host "  4. Add a tiny comments-only text stub in DCS's Mods\aircraft folder"
+    Write-Host "     so SimAppPro's aircraft scan can see the F-100D. DCS ignores it."
+    Write-Host "  5. Restart SimAppPro."
+    Write-Host ""
+    Write-Host "It downloads nothing, sends nothing, and everything is reversible"
+    Write-Host "(see README.md). Feel free to read this script before continuing."
+    Write-Host ""
+    Read-Host "Press Enter to continue (or close this window to cancel)"
+    # app.asar lives in Program Files, so re-launch ourselves elevated
+    Write-Host "Requesting administrator rights (needed for step 2)..."
     Start-Process powershell -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -NoExit -File `"$PSCommandPath`""
     exit
 }
