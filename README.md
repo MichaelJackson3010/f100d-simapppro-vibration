@@ -82,6 +82,8 @@ Everything is reversible in two minutes:
   removes it.
 - If WinWing ships official F-100D support one day, the installer notices and
   steps aside automatically.
+- Flying Heatblur's new F-14B(U) too? Same treatment here:
+  [f14bu-simapppro-vibration](https://github.com/MichaelJackson3010/f14bu-simapppro-vibration).
 
 ## Credits
 
