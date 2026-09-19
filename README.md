@@ -22,7 +22,9 @@ aircraft, just unlocked for the F-100D.
 
 1. Click the green **Code** button (top of this page) → **Download ZIP**, and
    extract it anywhere.
-2. Right-click **`install.ps1`** → **Run with PowerShell**.
+2. Double-click **`install.bat`**.
+   - If Windows shows a blue "Windows protected your PC" box, click
+     **More info → Run anyway** (it appears for any unsigned download).
    - The script first shows you a summary of what it will change and waits
      for you to press Enter.
    - Windows will then show an administrator (UAC) prompt — that's needed to
@@ -30,6 +32,9 @@ aircraft, just unlocked for the F-100D.
      made automatically first.
 3. SimAppPro restarts by itself. Select **DCS** on the vibration page — the
    **F-100D** tile is now in the aircraft row. Fly!
+
+Prefer a terminal? `powershell -ExecutionPolicy Bypass -File .\install.ps1`
+from the extracted folder does the same thing.
 
 Every device starts with sensible default curves (borrowed from the F-5E-3 —
 another supersonic gun fighter of the same era). Want more buffet, earlier?
